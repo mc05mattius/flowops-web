@@ -450,40 +450,97 @@
         .filtro-btn:hover { border-color: var(--accent); color: var(--accent); }
         .filtro-btn.active { background: var(--ink); color: var(--white); border-color: var(--ink); }
 
-        /* Grid de tarjetas */
-        #catalog-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
-            gap: 24px;
+        /* Toggle precio mensual/anual */
+        .precio-toggle-wrap {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            margin-bottom: 48px;
+            font-size: 15px;
+            font-weight: 500;
+            color: var(--muted);
+        }
+        .toggle-track {
+            width: 48px; height: 26px;
+            background: var(--accent);
+            border-radius: 100px;
+            position: relative;
+            cursor: pointer;
+            transition: background .2s;
+            border: none;
+            flex-shrink: 0;
+        }
+        .toggle-track.annual { background: var(--accent); }
+        .toggle-thumb {
+            width: 20px; height: 20px;
+            background: white;
+            border-radius: 50%;
+            position: absolute;
+            top: 3px; left: 3px;
+            transition: transform .2s;
+        }
+        .toggle-track.annual .toggle-thumb { transform: translateX(22px); }
+        .toggle-anual-badge {
+            font-size: 12px;
+            font-weight: 700;
+            color: var(--accent-2);
         }
 
-        /* Tarjeta individual */
-        .auto-card {
-            background: var(--white);
-            border-radius: var(--radius);
-            border: 1.5px solid var(--border);
-            overflow: hidden;
+        /* Grid de tarjetas — estilo imagen flotante */
+        #catalog-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 32px;
+            align-items: start; /* cards can have different heights, align tops */
+        }
+
+        /* Wrapper externo — contiene la imagen flotante y la tarjeta */
+        .auto-card-wrap {
             display: flex;
             flex-direction: column;
-            transition: all .25s ease;
+            align-items: center;
             animation: fadeUp .4s ease forwards;
             opacity: 0;
         }
-        .auto-card:hover { border-color: var(--accent); box-shadow: var(--shadow-md); transform: translateY(-4px); }
 
         @keyframes fadeUp {
             from { opacity: 0; transform: translateY(16px); }
             to   { opacity: 1; transform: translateY(0); }
         }
 
-        /* Franja de color según categoría */
-        .card-stripe {
-            height: 5px;
+        /* Contenedor SVG flotante sobre la tarjeta */
+        .auto-card-img-wrap {
+            width: 180px;
+            height: 150px;
+            position: relative;
+            z-index: 2;
+            margin-bottom: -36px;
+            filter: drop-shadow(0 10px 24px rgba(0,0,0,0.14));
+            transition: transform .35s ease;
+            flex-shrink: 0;
+        }
+        .auto-card-wrap:hover .auto-card-img-wrap { transform: translateY(-8px) scale(1.05); }
+
+        /* Tarjeta blanca debajo de la imagen */
+        .auto-card {
+            background: var(--white);
+            border-radius: var(--radius);
+            border: 1.5px solid var(--border);
             width: 100%;
+            display: flex;
+            flex-direction: column;
+            padding: 48px 28px 28px; /* top padding grande para dar espacio a la imagen */
+            transition: all .25s ease;
+            box-shadow: var(--shadow-sm);
+        }
+        .auto-card-wrap:hover .auto-card {
+            border-color: rgba(59,91,219,.25);
+            box-shadow: 0 16px 48px rgba(59,91,219,.12);
+            transform: translateY(-2px);
         }
 
-        .card-body { padding: 28px; flex: 1; display: flex; flex-direction: column; }
-
+        /* Fila superior: badge categoría + precio */
         .card-top {
             display: flex;
             justify-content: space-between;
@@ -494,45 +551,44 @@
         .cat-badge {
             font-size: 11px;
             font-weight: 700;
-            letter-spacing: .06em;
+            letter-spacing: .08em;
             text-transform: uppercase;
-            padding: 4px 10px;
+            padding: 5px 12px;
             border-radius: 100px;
         }
 
-        .card-icon {
-            width: 44px; height: 44px;
-            border-radius: 12px;
-            display: flex; align-items: center; justify-content: center;
-            font-size: 18px;
+        .card-price-block { text-align: right; }
+        .card-price-block .monto {
+            font-family: 'Syne', sans-serif;
+            font-size: 30px;
+            font-weight: 800;
+            color: var(--ink);
+            line-height: 1;
         }
+        .card-price-block .periodo { font-size: 12px; color: var(--muted); }
 
-        .auto-card h3 { font-size: 20px; font-weight: 700; margin-bottom: 10px; }
-        .auto-card .desc { font-size: 14px; color: var(--muted); line-height: 1.7; flex: 1; margin-bottom: 20px; }
-
-        /* Problema que resuelve */
-        .problema-box {
-            background: #FFF7ED;
-            border: 1px solid #FED7AA;
-            border-radius: 10px;
-            padding: 14px 16px;
-            font-size: 13px;
-            color: #7C3B00;
-            margin-bottom: 20px;
-            display: flex;
-            gap: 8px;
-            align-items: flex-start;
+        .auto-card h3 {
+            font-size: 22px;
+            font-weight: 800;
+            margin-bottom: 10px;
+            color: var(--ink);
         }
-        .problema-box i { margin-top: 2px; color: var(--accent-warm); flex-shrink: 0; }
+        .auto-card .desc {
+            font-size: 14px;
+            color: var(--muted);
+            line-height: 1.7;
+            flex: 1;
+            margin-bottom: 24px;
+        }
 
         /* Integraciones */
         .integraciones-label {
             font-size: 11px;
-            font-weight: 600;
+            font-weight: 700;
             text-transform: uppercase;
-            letter-spacing: .06em;
+            letter-spacing: .08em;
             color: var(--muted);
-            margin-bottom: 8px;
+            margin-bottom: 10px;
         }
 
         .integraciones {
@@ -544,7 +600,7 @@
 
         .int-tag {
             font-size: 12px;
-            padding: 4px 10px;
+            padding: 5px 12px;
             background: var(--surface);
             border-radius: 100px;
             color: var(--ink);
@@ -552,6 +608,28 @@
             display: flex; align-items: center; gap: 5px;
         }
 
+        /* Botón negro ancho — igual al de la referencia */
+        .cta-card-full {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            width: 100%;
+            padding: 15px;
+            background: var(--ink);
+            color: white;
+            border-radius: 10px;
+            font-family: 'Syne', sans-serif;
+            font-size: 15px;
+            font-weight: 700;
+            cursor: pointer;
+            border: none;
+            transition: all .2s;
+            text-decoration: none;
+        }
+        .cta-card-full:hover { background: var(--accent); transform: translateY(-1px); box-shadow: 0 8px 24px rgba(59,91,219,.3); }
+
+        /* — mantener por compatibilidad con otras secciones — */
         .card-footer {
             display: flex;
             align-items: center;
@@ -1008,8 +1086,8 @@
 
     <!-- =============================================
          CATÁLOGO DE AUTOMATIZACIONES
-         Filtros por categoría. Cada tarjeta muestra:
-         el problema que resuelve, integraciones y precio.
+         Imagen flotante sobre la tarjeta, precio arriba,
+         botón negro ancho abajo. Toggle mensual/anual.
     ============================================= -->
     <section id="catalogo">
         <div class="container">
@@ -1027,6 +1105,15 @@
                     <button class="filtro-btn" data-cat="operaciones">Gestión Interna</button>
                     <button class="filtro-btn" data-cat="finanzas">Finanzas</button>
                 </div>
+            </div>
+
+            <!-- Toggle precio mensual / anual -->
+            <div class="precio-toggle-wrap">
+                <span>Mensual</span>
+                <button class="toggle-track" id="toggle-precio" onclick="togglePrecio()">
+                    <span class="toggle-thumb"></span>
+                </button>
+                <span>Anual <span class="toggle-anual-badge">-20%</span></span>
             </div>
 
             <!-- Las tarjetas se renderizan aquí con JS -->
@@ -1204,33 +1291,29 @@
          2. Renderizado de tarjetas con filtros
          3. Navbar scroll effect
     ============================================= -->
-    <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+    <script>
 
-        // ─── PALETA DE COLORES POR CATEGORÍA ─────────────────────────────────────
+        // ─── PALETA E ILUSTRACIONES SVG POR CATEGORÍA (sin dependencias externas) ──
         const catMeta = {
             ventas: {
                 label: 'Ventas',
-                stripe: 'linear-gradient(90deg,#3B5BDB,#6eb5ff)',
                 badgeBg: '#EEF2FF', badgeColor: '#3B5BDB',
-                iconBg: '#EEF2FF', iconColor: '#3B5BDB', icon: 'fa-bullseye'
+                svgId: 'svg-ventas'
             },
             atencion: {
-                label: 'Atención al Cliente',
-                stripe: 'linear-gradient(90deg,#00C896,#34d399)',
+                label: 'Soporte',
                 badgeBg: '#ECFDF5', badgeColor: '#059669',
-                iconBg: '#ECFDF5', iconColor: '#059669', icon: 'fa-comments'
+                svgId: 'svg-atencion'
             },
             operaciones: {
-                label: 'Gestión Interna',
-                stripe: 'linear-gradient(90deg,#7C3AED,#a78bfa)',
+                label: 'Operaciones',
                 badgeBg: '#F5F3FF', badgeColor: '#7C3AED',
-                iconBg: '#F5F3FF', iconColor: '#7C3AED', icon: 'fa-gears'
+                svgId: 'svg-operaciones'
             },
             finanzas: {
                 label: 'Finanzas',
-                stripe: 'linear-gradient(90deg,#F97316,#fbbf24)',
                 badgeBg: '#FFF7ED', badgeColor: '#C2410C',
-                iconBg: '#FFF7ED', iconColor: '#EA580C', icon: 'fa-file-invoice-dollar'
+                svgId: 'svg-finanzas'
             }
         };
 
@@ -1240,35 +1323,170 @@
                 id: 1,
                 titulo: 'Captura de Leads 24/7',
                 cat: 'ventas',
-                problema: 'Estás perdiendo leads en la madrugada porque nadie los atiende a tiempo.',
                 desc: 'Captura clientes potenciales desde Facebook Ads, Instagram y tu web. Notifica a tu equipo por WhatsApp en segundos y regístralos automáticamente en tu CRM.',
                 tools: ['Facebook Ads', 'WhatsApp Business', 'HubSpot'],
-                precio: 49
+                precioMes: 49,
+                precioAnual: 39
             },
             {
                 id: 2,
                 titulo: 'Chatbot de Respuesta Inmediata',
                 cat: 'atencion',
-                problema: 'Tus clientes preguntan a las 11pm y nadie les responde hasta el día siguiente.',
                 desc: 'Bot inteligente que responde preguntas frecuentes, comparte catálogos, agenda citas y transfiere al humano indicado solo cuando es necesario.',
                 tools: ['WhatsApp Business', 'Google Calendar', 'Notion'],
-                precio: 59
+                precioMes: 59,
+                precioAnual: 47
             },
             {
                 id: 3,
                 titulo: 'Facturación Automática',
                 cat: 'finanzas',
-                problema: 'Generar facturas manualmente después de cada pago consume horas.',
                 desc: 'Cuando un cliente paga en Stripe o PayPal, se genera automáticamente la factura en PDF, se envía por correo y se registra en tu hoja de contabilidad.',
                 tools: ['Stripe', 'Google Drive', 'Gmail'],
-                precio: 39
+                precioMes: 39,
+                precioAnual: 31
             }
         ];
 
-        // ─── ESTADO DE FILTROS ─────────────────────────────────────────────────
-        let catActiva = 'all';
+        // ─── SVGs inline guardados en el DOM (se clonan por tarjeta) ─────────────
+        const svgLibrary = {
+            'svg-ventas': `<svg viewBox="0 0 140 130" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%">
+              <defs>
+                <linearGradient id="gv1" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#60a5fa"/><stop offset="100%" stop-color="#3B5BDB"/></linearGradient>
+                <linearGradient id="gv2" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#fb923c"/><stop offset="100%" stop-color="#ea580c"/></linearGradient>
+                <filter id="sh"><feDropShadow dx="0" dy="4" stdDeviation="4" flood-color="rgba(59,91,219,.25)"/></filter>
+              </defs>
+              <!-- Barras -->
+              <rect x="12" y="82" width="22" height="34" rx="5" fill="url(#gv1)" opacity=".55" filter="url(#sh)"/>
+              <rect x="40" y="62" width="22" height="54" rx="5" fill="url(#gv1)" opacity=".75" filter="url(#sh)"/>
+              <rect x="68" y="40" width="22" height="76" rx="5" fill="url(#gv1)" filter="url(#sh)"/>
+              <rect x="96" y="18" width="22" height="98" rx="5" fill="url(#gv1)" filter="url(#sh)"/>
+              <!-- Línea de tendencia -->
+              <polyline points="23,80 51,58 79,38 107,16" fill="none" stroke="#f97316" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round" opacity=".9"/>
+              <!-- Flecha -->
+              <circle cx="107" cy="16" r="7" fill="url(#gv2)" filter="url(#sh)"/>
+              <polyline points="103,20 107,13 111,20" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+              <!-- Apretón de manos -->
+              <circle cx="30" cy="16" r="11" fill="url(#gv2)" filter="url(#sh)"/>
+              <circle cx="30" cy="16" r="6" fill="rgba(255,255,255,.4)"/>
+              <circle cx="110" cy="110" r="16" fill="url(#gv2)" opacity=".8" filter="url(#sh)"/>
+              <path d="M103 117 Q110 112 117 117" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round"/>
+              <circle cx="110" cy="107" r="5" fill="white" opacity=".6"/>
+            </svg>`,
 
-        // ─── RENDERIZAR TARJETAS ──────────────────────────────────────────────
+            'svg-atencion': `<svg viewBox="0 0 140 130" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%">
+              <defs>
+                <linearGradient id="ga1" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#6ee7b7"/><stop offset="100%" stop-color="#059669"/></linearGradient>
+                <linearGradient id="ga2" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#34d399"/><stop offset="100%" stop-color="#047857"/></linearGradient>
+                <filter id="sha"><feDropShadow dx="0" dy="4" stdDeviation="5" flood-color="rgba(5,150,105,.25)"/></filter>
+              </defs>
+              <!-- Cabeza auricular -->
+              <path d="M35 68 Q35 30 70 30 Q105 30 105 68" fill="none" stroke="url(#ga1)" stroke-width="9" stroke-linecap="round" filter="url(#sha)"/>
+              <!-- Orejera izquierda -->
+              <rect x="22" y="64" width="20" height="32" rx="10" fill="url(#ga1)" filter="url(#sha)"/>
+              <!-- Orejera derecha -->
+              <rect x="98" y="64" width="20" height="32" rx="10" fill="url(#ga1)" filter="url(#sha)"/>
+              <!-- Micrófono -->
+              <line x1="98" y1="92" x2="98" y2="108" stroke="#059669" stroke-width="5" stroke-linecap="round"/>
+              <rect x="88" y="105" width="20" height="10" rx="5" fill="url(#ga2)" filter="url(#sha)"/>
+              <!-- Engranaje flotante -->
+              <circle cx="108" cy="28" r="18" fill="url(#ga2)" filter="url(#sha)"/>
+              <circle cx="108" cy="28" r="9" fill="rgba(255,255,255,.35)"/>
+              <circle cx="108" cy="28" r="3.5" fill="white"/>
+              <rect x="105.5" y="8" width="5" height="7" rx="2.5" fill="#047857"/>
+              <rect x="105.5" y="41" width="5" height="7" rx="2.5" fill="#047857"/>
+              <rect x="89" y="25.5" width="7" height="5" rx="2.5" fill="#047857"/>
+              <rect x="122" y="25.5" width="7" height="5" rx="2.5" fill="#047857"/>
+              <rect x="93" y="14" width="5" height="7" rx="2.5" fill="#047857" transform="rotate(45 95.5 17.5)"/>
+              <rect x="118" y="14" width="5" height="7" rx="2.5" fill="#047857" transform="rotate(-45 120.5 17.5)"/>
+              <!-- Burbuja de chat -->
+              <rect x="18" y="10" width="46" height="30" rx="10" fill="url(#ga1)" opacity=".75" filter="url(#sha)"/>
+              <polygon points="28,40 22,52 38,40" fill="#34d399" opacity=".75"/>
+              <rect x="26" y="19" width="30" height="5" rx="2.5" fill="white" opacity=".7"/>
+              <rect x="26" y="28" width="20" height="5" rx="2.5" fill="white" opacity=".5"/>
+            </svg>`,
+
+            'svg-operaciones': `<svg viewBox="0 0 140 130" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%">
+              <defs>
+                <linearGradient id="go1" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#c4b5fd"/><stop offset="100%" stop-color="#7C3AED"/></linearGradient>
+                <linearGradient id="go2" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#a78bfa"/><stop offset="100%" stop-color="#6d28d9"/></linearGradient>
+                <filter id="sho"><feDropShadow dx="0" dy="4" stdDeviation="5" flood-color="rgba(124,58,237,.25)"/></filter>
+              </defs>
+              <!-- Engranaje grande -->
+              <circle cx="55" cy="60" r="30" fill="url(#go1)" filter="url(#sho)"/>
+              <circle cx="55" cy="60" r="15" fill="rgba(255,255,255,.3)"/>
+              <circle cx="55" cy="60" r="6" fill="white" opacity=".6"/>
+              <rect x="51.5" y="26" width="7" height="10" rx="3.5" fill="#6d28d9"/>
+              <rect x="51.5" y="84" width="7" height="10" rx="3.5" fill="#6d28d9"/>
+              <rect x="21" y="56.5" width="10" height="7" rx="3.5" fill="#6d28d9"/>
+              <rect x="79" y="56.5" width="10" height="7" rx="3.5" fill="#6d28d9"/>
+              <rect x="30" y="33" width="7" height="10" rx="3.5" fill="#6d28d9" transform="rotate(45 33.5 38)"/>
+              <rect x="73" y="33" width="7" height="10" rx="3.5" fill="#6d28d9" transform="rotate(-45 76.5 38)"/>
+              <rect x="30" y="77" width="7" height="10" rx="3.5" fill="#6d28d9" transform="rotate(-45 33.5 82)"/>
+              <rect x="73" y="77" width="7" height="10" rx="3.5" fill="#6d28d9" transform="rotate(45 76.5 82)"/>
+              <!-- Engranaje mediano -->
+              <circle cx="102" cy="88" r="20" fill="url(#go2)" filter="url(#sho)"/>
+              <circle cx="102" cy="88" r="10" fill="rgba(255,255,255,.25)"/>
+              <circle cx="102" cy="88" r="4" fill="white" opacity=".5"/>
+              <rect x="99" y="65" width="6" height="8" rx="3" fill="#6d28d9"/>
+              <rect x="99" y="103" width="6" height="8" rx="3" fill="#6d28d9"/>
+              <rect x="80" y="85" width="8" height="6" rx="3" fill="#6d28d9"/>
+              <rect x="114" y="85" width="8" height="6" rx="3" fill="#6d28d9"/>
+              <!-- Engranaje pequeño -->
+              <circle cx="106" cy="28" r="12" fill="#a78bfa" opacity=".7" filter="url(#sho)"/>
+              <circle cx="106" cy="28" r="5.5" fill="rgba(255,255,255,.25)"/>
+              <circle cx="106" cy="28" r="2.5" fill="white" opacity=".5"/>
+              <!-- Líneas de proceso -->
+              <path d="M83 62 Q96 74 92 80" fill="none" stroke="#7C3AED" stroke-width="3.5" stroke-linecap="round" stroke-dasharray="5 4" opacity=".7"/>
+              <path d="M75 44 Q94 36 100 44" fill="none" stroke="#a78bfa" stroke-width="3" stroke-linecap="round" stroke-dasharray="4 3" opacity=".6"/>
+            </svg>`,
+
+            'svg-finanzas': `<svg viewBox="0 0 140 130" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%">
+              <defs>
+                <linearGradient id="gf1" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#fb923c"/><stop offset="100%" stop-color="#C2410C"/></linearGradient>
+                <linearGradient id="gf2" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#fcd34d"/><stop offset="100%" stop-color="#d97706"/></linearGradient>
+                <filter id="shf"><feDropShadow dx="0" dy="4" stdDeviation="5" flood-color="rgba(194,65,12,.2)"/></filter>
+              </defs>
+              <!-- Carpeta base -->
+              <rect x="15" y="42" width="82" height="78" rx="8" fill="url(#gf1)" filter="url(#shf)"/>
+              <rect x="15" y="34" width="44" height="18" rx="6" fill="#ea580c"/>
+              <!-- Hoja documento encima -->
+              <rect x="28" y="55" width="56" height="72" rx="6" fill="#fff" opacity=".92" filter="url(#shf)"/>
+              <!-- Líneas de factura -->
+              <rect x="38" y="68" width="36" height="5" rx="2.5" fill="#fed7aa"/>
+              <rect x="38" y="79" width="28" height="5" rx="2.5" fill="#fed7aa"/>
+              <rect x="38" y="90" width="32" height="5" rx="2.5" fill="#fed7aa"/>
+              <!-- Signo $ en la hoja -->
+              <text x="56" y="114" font-size="16" font-weight="900" fill="#C2410C" text-anchor="middle" font-family="sans-serif" opacity=".35">$</text>
+              <!-- Reloj flotante -->
+              <circle cx="100" cy="82" r="26" fill="url(#gf2)" filter="url(#shf)"/>
+              <circle cx="100" cy="82" r="18" fill="rgba(255,255,255,.25)"/>
+              <circle cx="100" cy="82" r="3.5" fill="#C2410C"/>
+              <!-- Manecilla hora -->
+              <line x1="100" y1="82" x2="100" y2="68" stroke="#C2410C" stroke-width="3.5" stroke-linecap="round"/>
+              <!-- Manecilla minuto -->
+              <line x1="100" y1="82" x2="111" y2="88" stroke="#C2410C" stroke-width="2.5" stroke-linecap="round"/>
+              <!-- Marcas hora -->
+              <circle cx="100" cy="59" r="2" fill="#C2410C" opacity=".5"/>
+              <circle cx="100" cy="105" r="2" fill="#C2410C" opacity=".5"/>
+              <circle cx="77" cy="82" r="2" fill="#C2410C" opacity=".5"/>
+              <circle cx="123" cy="82" r="2" fill="#C2410C" opacity=".5"/>
+            </svg>`
+        };
+
+        // ─── ESTADO ───────────────────────────────────────────────────────────
+        let catActiva = 'all';
+        let esAnual   = false;
+
+        // ─── TOGGLE PRECIO ────────────────────────────────────────────────────
+        function togglePrecio() {
+            esAnual = !esAnual;
+            const track = document.getElementById('toggle-precio');
+            track.classList.toggle('annual', esAnual);
+            renderCatalogo();
+        }
+
+        // ─── RENDERIZAR TARJETAS — estilo imagen flotante ─────────────────────
         function renderCatalogo() {
             const grid = document.getElementById('catalog-grid');
             const lista = catActiva === 'all'
@@ -1278,59 +1496,42 @@
             grid.innerHTML = '';
 
             lista.forEach((item, i) => {
-                const meta = catMeta[item.cat];
-                const waMsg = encodeURIComponent(`Hola, me interesa la automatización "${item.titulo}". ¿Cómo funciona?`);
+                const meta   = catMeta[item.cat];
+                const precio = esAnual ? item.precioAnual : item.precioMes;
+                const waMsg  = encodeURIComponent(`Hola, me interesa la automatización "${item.titulo}". ¿Cómo funciona?`);
 
-                const card = document.createElement('div');
-                card.className = 'auto-card';
-                card.style.animationDelay = `${i * 60}ms`;
+                const wrap = document.createElement('div');
+                wrap.className = 'auto-card-wrap';
+                wrap.style.animationDelay = `${i * 80}ms`;
 
-                card.innerHTML = `
-                    <!-- Franja de color de categoría -->
-                    <div class="card-stripe" style="background:${meta.stripe};"></div>
-
-                    <div class="card-body">
-                        <!-- Encabezado: categoría + ícono -->
+                wrap.innerHTML = `
+                    <!-- Ilustración SVG flotante sobre la tarjeta -->
+                    <div class="auto-card-img-wrap">
+                        ${svgLibrary[meta.svgId]}
+                    </div>
+                    <div class="auto-card">
                         <div class="card-top">
                             <span class="cat-badge" style="background:${meta.badgeBg};color:${meta.badgeColor};">
                                 ${meta.label}
                             </span>
-                            <div class="card-icon" style="background:${meta.iconBg};color:${meta.iconColor};">
-                                <i class="fas ${meta.icon}"></i>
+                            <div class="card-price-block">
+                                <div class="monto">$${precio}</div>
+                                <div class="periodo">/mes</div>
                             </div>
                         </div>
-
-                        <!-- Título y descripción -->
                         <h3>${item.titulo}</h3>
                         <p class="desc">${item.desc}</p>
-
-                        <!-- Problema que resuelve -->
-                        <div class="problema-box">
-                            <i class="fas fa-triangle-exclamation"></i>
-                            <span><strong>Problema que resuelve:</strong> ${item.problema}</span>
-                        </div>
-
-                        <!-- Integraciones -->
-                        <div class="integraciones-label">Conecta con:</div>
+                        <div class="integraciones-label">Integraciones:</div>
                         <div class="integraciones">
-                            ${item.tools.map(t => `<span class="int-tag"><i class="fas fa-plug" style="font-size:9px;opacity:.5"></i>${t}</span>`).join('')}
+                            ${item.tools.map(t => `<span class="int-tag"><i class="fas fa-plug" style="font-size:9px;opacity:.4"></i>${t}</span>`).join('')}
                         </div>
-
-                        <!-- Precio + CTA -->
-                        <div class="card-footer">
-                            <div class="precio-bloque">
-                                <div class="desde">Desde</div>
-                                <span class="monto">$${item.precio}</span>
-                                <span class="periodo">/mes</span>
-                            </div>
-                            <a href="https://wa.me/573001234567?text=${waMsg}" target="_blank" class="cta-card">
-                                <i class="fab fa-whatsapp"></i> Me interesa
-                            </a>
-                        </div>
+                        <a href="https://wa.me/573001234567?text=${waMsg}" target="_blank" class="cta-card-full">
+                            Contratar Ahora
+                        </a>
                     </div>
                 `;
 
-                grid.appendChild(card);
+                grid.appendChild(wrap);
             });
         }
 
@@ -1346,4 +1547,13 @@
 
         // ─── NAVBAR SCROLL EFFECT ────────────────────────────────────────────
         window.addEventListener('scroll', () => {
-            document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 20
+            document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 20);
+        });
+
+        // ─── INIT ─────────────────────────────────────────────────────────────
+        renderCatalogo();
+
+    </script>
+
+</body>
+</html>
