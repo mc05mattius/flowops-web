@@ -540,6 +540,23 @@
             transform: translateY(-2px);
         }
 
+        .card-destacado {
+            border-color: rgba(59,91,219,.35) !important;
+            box-shadow: 0 8px 32px rgba(59,91,219,.12) !important;
+        }
+
+        .card-destacado-badge {
+            display: inline-block;
+            background: #EEF2FF;
+            color: #3B5BDB;
+            font-size: 11px;
+            font-weight: 700;
+            padding: 4px 12px;
+            border-radius: 100px;
+            margin-bottom: 14px;
+            letter-spacing: .04em;
+        }
+
         /* Fila superior: badge categoría + precio */
         .card-top {
             display: flex;
@@ -966,8 +983,8 @@
         <!-- Estadísticas de credibilidad -->
         <div class="hero-stats">
             <div class="hero-stat-item">
-                <div class="num">+40</div>
-                <div class="label">Automatizaciones en catálogo</div>
+                <div class="num">+16</div>
+                <div class="label">Automatizaciones disponibles</div>
             </div>
             <div class="stat-sep"></div>
             <div class="hero-stat-item">
@@ -1104,6 +1121,7 @@
                     <button class="filtro-btn" data-cat="atencion">Atención al Cliente</button>
                     <button class="filtro-btn" data-cat="operaciones">Gestión Interna</button>
                     <button class="filtro-btn" data-cat="finanzas">Finanzas</button>
+                    <button class="filtro-btn" data-cat="marketing">Marketing</button>
                 </div>
             </div>
 
@@ -1279,7 +1297,7 @@
             </div>
 
             <div style="width:100%;text-align:center;font-size:12px;margin-top:8px;">
-                © 2024 FlowOps. Todos los derechos reservados.
+                © 2025 FlowOps. Todos los derechos reservados.
             </div>
 
         </div>
@@ -1314,11 +1332,17 @@
                 label: 'Finanzas',
                 badgeBg: '#FFF7ED', badgeColor: '#C2410C',
                 svgId: 'svg-finanzas'
+            },
+            marketing: {
+                label: 'Marketing',
+                badgeBg: '#FFF1F5', badgeColor: '#BE185D',
+                svgId: 'svg-marketing'
             }
         };
 
         // ─── CATÁLOGO DE AUTOMATIZACIONES ────────────────────────────────────────
         const automatizaciones = [
+            // ── VENTAS ──────────────────────────────────────────────────────────
             {
                 id: 1,
                 titulo: 'Captura de Leads 24/7',
@@ -1330,6 +1354,34 @@
             },
             {
                 id: 2,
+                titulo: 'Prospección de Clientes por Email',
+                cat: 'ventas',
+                desc: 'Extrae automáticamente emails de empresas en Latinoamérica y Europa, y envía una presentación personalizada a cada una. Ideal para conseguir tus primeros clientes.',
+                tools: ['n8n', 'Gmail', 'Google Sheets'],
+                precioMes: 59,
+                precioAnual: 47
+            },
+            {
+                id: 3,
+                titulo: 'Icebreaker Personalizado para Prospectos',
+                cat: 'ventas',
+                desc: 'Antes de contactar a un prospecto, el agente investiga su empresa y redacta un mensaje de apertura único y relevante que rompe el hielo con contexto real.',
+                tools: ['n8n', 'OpenAI', 'Gmail'],
+                precioMes: 49,
+                precioAnual: 39
+            },
+            {
+                id: 4,
+                titulo: 'Appointment Setter en Instagram',
+                cat: 'ventas',
+                desc: 'Agente que gestiona DMs de Instagram, califica prospectos, responde dudas y agenda reuniones de ventas de forma autónoma — sin intervención humana.',
+                tools: ['Instagram', 'Google Calendar', 'OpenAI'],
+                precioMes: 69,
+                precioAnual: 55
+            },
+            // ── ATENCIÓN AL CLIENTE ─────────────────────────────────────────────
+            {
+                id: 5,
                 titulo: 'Chatbot de Respuesta Inmediata',
                 cat: 'atencion',
                 desc: 'Bot inteligente que responde preguntas frecuentes, comparte catálogos, agenda citas y transfiere al humano indicado solo cuando es necesario.',
@@ -1338,11 +1390,105 @@
                 precioAnual: 47
             },
             {
-                id: 3,
+                id: 6,
+                titulo: 'Asistente Personal para CEOs',
+                cat: 'atencion',
+                desc: 'Agente de IA que gestiona tu bandeja de entrada, prioriza correos, crea eventos en tu calendario, redacta respuestas y reporta tareas pendientes cada mañana.',
+                tools: ['Gmail', 'Google Calendar', 'Google Tasks', 'OpenAI'],
+                precioMes: 99,
+                precioAnual: 79,
+                destacado: true
+            },
+            {
+                id: 7,
+                titulo: 'Secretario Virtual',
+                cat: 'atencion',
+                desc: 'Recibe mensajes por cualquier canal, crea tareas automáticamente, agenda recordatorios y mantiene tu lista de pendientes siempre actualizada y organizada.',
+                tools: ['Google Tasks', 'Gmail', 'Google Calendar'],
+                precioMes: 49,
+                precioAnual: 39
+            },
+            // ── OPERACIONES ─────────────────────────────────────────────────────
+            {
+                id: 8,
+                titulo: 'Gestión Inteligente de E-Commerce',
+                cat: 'operaciones',
+                desc: 'Agente que revisa pedidos en Shopify, actualiza productos, crea órdenes nuevas y notifica cambios de inventario — todo sin entrar al panel.',
+                tools: ['Shopify', 'Gmail', 'OpenAI'],
+                precioMes: 79,
+                precioAnual: 63
+            },
+            {
+                id: 9,
+                titulo: 'Indexador de Documentos RAG',
+                cat: 'operaciones',
+                desc: 'Sube PDFs o Excel a Google Drive y el sistema los convierte automáticamente en una base de conocimiento consultable por tu equipo o tu chatbot interno.',
+                tools: ['Google Drive', 'Supabase', 'OpenAI'],
+                precioMes: 89,
+                precioAnual: 71
+            },
+            {
+                id: 10,
+                titulo: 'Avatar de Marca Personal con IA',
+                cat: 'operaciones',
+                desc: 'Crea un agente que habla con tu voz, responde como tú y representa tu marca en interacciones digitales basándose en tu estilo de comunicación real.',
+                tools: ['OpenAI', 'n8n', 'Gmail'],
+                precioMes: 79,
+                precioAnual: 63
+            },
+            // ── FINANZAS ────────────────────────────────────────────────────────
+            {
+                id: 11,
                 titulo: 'Facturación Automática',
                 cat: 'finanzas',
                 desc: 'Cuando un cliente paga en Stripe o PayPal, se genera automáticamente la factura en PDF, se envía por correo y se registra en tu hoja de contabilidad.',
                 tools: ['Stripe', 'Google Drive', 'Gmail'],
+                precioMes: 39,
+                precioAnual: 31
+            },
+            {
+                id: 12,
+                titulo: 'Extractor de KPIs de Meta Ads',
+                cat: 'finanzas',
+                desc: 'Conecta tu cuenta de Meta Ads y extrae diariamente impresiones, clics, gasto, CPC, CPM y conversiones por campaña. Todo en un reporte listo para leer.',
+                tools: ['Meta Ads API', 'Google Sheets', 'Gmail'],
+                precioMes: 59,
+                precioAnual: 47
+            },
+            // ── MARKETING ───────────────────────────────────────────────────────
+            {
+                id: 13,
+                titulo: 'Generador de Guiones para YouTube',
+                cat: 'marketing',
+                desc: 'Proporciona un tema o keyword y el agente genera un guion completo con gancho, desarrollo y CTA — optimizado para retención y posicionamiento.',
+                tools: ['OpenAI', 'Google Docs', 'n8n'],
+                precioMes: 39,
+                precioAnual: 31
+            },
+            {
+                id: 14,
+                titulo: 'Blog SEO con Inteligencia Artificial',
+                cat: 'marketing',
+                desc: 'Genera artículos de blog SEO-optimizados a partir de una keyword. El agente investiga, estructura, redacta y entrega el contenido listo para publicar.',
+                tools: ['OpenAI', 'Google Docs', 'n8n'],
+                precioMes: 49,
+                precioAnual: 39
+            },
+            {
+                id: 15,
+                titulo: 'Reporte de Rendimiento Publicitario',
+                cat: 'marketing',
+                desc: 'Consolida el rendimiento de tus campañas de Meta Ads en un dashboard semanal automático. Identifica qué anuncios funcionan y cuáles pausar.',
+                tools: ['Meta Ads API', 'Google Sheets', 'Gmail'],
+                precioMes: 59,
+                precioAnual: 47
+            },
+            {
+                id: 16,
+                titulo: 'Asistente de Contenido para Redes',
+                cat: 'marketing',
+                desc: 'Alimenta el agente con tu calendario editorial y genera automáticamente copies, hashtags y textos alternativos para Instagram, LinkedIn y más.',
+                tools: ['OpenAI', 'Google Sheets', 'n8n'],
                 precioMes: 39,
                 precioAnual: 31
             }
@@ -1471,6 +1617,31 @@
               <circle cx="100" cy="105" r="2" fill="#C2410C" opacity=".5"/>
               <circle cx="77" cy="82" r="2" fill="#C2410C" opacity=".5"/>
               <circle cx="123" cy="82" r="2" fill="#C2410C" opacity=".5"/>
+            </svg>`,
+
+            'svg-marketing': `<svg viewBox="0 0 140 130" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%">
+              <defs>
+                <linearGradient id="gm1" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#f9a8d4"/><stop offset="100%" stop-color="#BE185D"/></linearGradient>
+                <linearGradient id="gm2" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#fda4af"/><stop offset="100%" stop-color="#e11d48"/></linearGradient>
+                <filter id="shm"><feDropShadow dx="0" dy="4" stdDeviation="5" flood-color="rgba(190,24,93,.22)"/></filter>
+              </defs>
+              <!-- Megáfono cuerpo -->
+              <ellipse cx="50" cy="68" rx="22" ry="28" fill="url(#gm1)" filter="url(#shm)"/>
+              <ellipse cx="50" cy="68" rx="11" ry="14" fill="rgba(255,255,255,.3)"/>
+              <!-- Mástil -->
+              <rect x="46" y="40" width="8" height="56" rx="4" fill="url(#gm1)" filter="url(#shm)"/>
+              <!-- Bocina derecha -->
+              <path d="M54 50 Q100 42 104 68 Q100 94 54 86 Z" fill="url(#gm2)" filter="url(#shm)"/>
+              <!-- Boca bocina -->
+              <ellipse cx="104" cy="68" rx="10" ry="18" fill="#BE185D" opacity=".7"/>
+              <!-- Ondas sonoras -->
+              <path d="M114 52 Q126 60 126 68 Q126 76 114 84" fill="none" stroke="#BE185D" stroke-width="4" stroke-linecap="round" opacity=".5"/>
+              <path d="M120 44 Q136 56 136 68 Q136 80 120 92" fill="none" stroke="#f9a8d4" stroke-width="3" stroke-linecap="round" opacity=".35"/>
+              <!-- Estrellas métricas -->
+              <circle cx="22" cy="38" r="9" fill="url(#gm2)" filter="url(#shm)"/>
+              <text x="22" y="42" font-size="10" font-weight="900" fill="white" text-anchor="middle" font-family="sans-serif">★</text>
+              <circle cx="18" cy="102" r="7" fill="url(#gm1)" opacity=".8" filter="url(#shm)"/>
+              <text x="18" y="106" font-size="9" font-weight="900" fill="white" text-anchor="middle" font-family="sans-serif">%</text>
             </svg>`
         };
 
@@ -1509,7 +1680,8 @@
                     <div class="auto-card-img-wrap">
                         ${svgLibrary[meta.svgId]}
                     </div>
-                    <div class="auto-card">
+                    <div class="auto-card${item.destacado ? ' card-destacado' : ''}">
+                        ${item.destacado ? '<div class="card-destacado-badge">⭐ Más solicitado</div>' : ''}
                         <div class="card-top">
                             <span class="cat-badge" style="background:${meta.badgeBg};color:${meta.badgeColor};">
                                 ${meta.label}
